@@ -8,68 +8,78 @@
     app:cardCornerRadius="24dp"
     app:cardElevation="8dp"
     app:strokeColor="#FFFFFF"
-    app:strokeWidth="2dp">
+    app:strokeWidth="1dp">
 
 <LinearLayout
 android:orientation="vertical"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:padding="8dp">
+android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
-<!-- Collapsed status bar section -->
+    <!-- Collapsed status bar section -->
 <LinearLayout
-    android:id="@+id/status_row"
-    android:layout_width="match_parent"
+android:id="@+id/status_row"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:gravity="center_vertical"
+android:layout_marginBottom="4dp">
+
+<ImageView
+    android:id="@+id/network_icon"
+    android:layout_width="16dp"
+android:layout_height="16dp"
+android:src="@drawable/ic_wifi"
+android:layout_marginEnd="6dp"
+app:tint="@android:color/white" />
+
+<ImageView
+    android:id="@+id/battery_icon"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
+    android:src="@drawable/ic_battery_charging"
+    android:layout_marginEnd="4dp"
+    app:tint="@android:color/white" />
+
+<TextView
+    android:id="@+id/battery_text"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_marginBottom="4dp">
+    android:text="--%"
+    android:textColor="@android:color/white"
+    android:textSize="10sp"
+android:layout_marginEnd="12dp"/>
 
-    <ImageView
-        android:id="@+id/network_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_wifi"
-        android:layout_marginEnd="8dp"
-        app:tint="@android:color/white" />
-
-    <ImageView
-        android:id="@+id/battery_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_battery_charging"
-        android:layout_marginEnd="4dp"
-        app:tint="@android:color/white" />
-
-    <TextView
-        android:id="@+id/battery_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="--%"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:layout_marginEnd="16dp"/>
-
-    <TextView
-        android:id="@+id/time_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00 AM"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:layout_gravity="end"/>
+<TextView
+    android:id="@+id/time_text"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="end"
+    android:text="00:00 AM"
+    android:textColor="@android:color/white"
+    android:textSize="10sp"/>
 </LinearLayout>
 
-<!-- Notification content -->
+    <!-- Notification content (wrapped for visibility control) -->
+<LinearLayout
+android:id="@+id/island_content_layout"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:gravity="center_horizontal"
+android:visibility="invisible"> <!-- Start invisible, made visible on expand -->
+
 <TextView
     android:id="@+id/notification_title"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Dynamic Island"
     android:textColor="@android:color/white"
-android:textSize="14sp"
-android:textStyle="bold"
-android:layout_gravity="center_horizontal"/>
+    android:textSize="14sp"
+    android:textStyle="bold"
+    android:maxLines="1"
+    android:ellipsize="end"/>
 
 <TextView
     android:id="@+id/notification_text"
@@ -77,19 +87,21 @@ android:layout_gravity="center_horizontal"/>
     android:layout_height="wrap_content"
     android:text="Active"
     android:textColor="@android:color/white"
-android:textSize="12sp"
-android:layout_gravity="center_horizontal"
-android:layout_marginTop="2dp"/>
-
-<!-- History container for expanded view -->
-<LinearLayout
-    android:id="@+id/history_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone"
-    android:layout_marginTop="8dp"/>
-
+    android:textSize="12sp"
+    android:layout_marginTop="2dp"
+    android:maxLines="1"
+    android:ellipsize="end"/>
 </LinearLayout>
+
+    <!-- History container for expanded view -->
+<LinearLayout
+android:id="@+id/history_container"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:visibility="gone"
+android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
     </androidx.cardview.widget.CardView>
 
