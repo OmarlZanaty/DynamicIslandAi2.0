@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 data class DynamicIslandConfig(
     val collapsedWidth: Int = 200, // Adjusted for typical pill shape
     val collapsedHeight: Int = 60,
-    val expandedWidth: Int = 350,
+    val expandedWidth: Int = 408,
     val expandedHeight: Int = 150,
     val positionY: Int = 30, // Pixels from top
     val animationDuration: Long = 250 // ms
