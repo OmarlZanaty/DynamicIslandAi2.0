@@ -68,7 +68,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.d(TAG, "🚀 onCreate: Starting MainActivity")
 
+        requestAutoStartPermission()
+
         createNotificationChannel() // Create channel for test notifications
+
+        if (!isNotificationServiceEnabled()) {
+            Toast.makeText(this, "Please enable Notification Access for the app.", Toast.LENGTH_LONG).show()
+            requestNotificationListenerPermission()
+        }
+
+        checkBatteryOptimization()
 
         val titleInput = findViewById<EditText>(R.id.notification_title_input)
         val textInput = findViewById<EditText>(R.id.notification_text_input)
@@ -91,6 +100,30 @@ class MainActivity : AppCompatActivity() {
 
         // Initial permission check
         checkAndRequestPermissions()
+    }
+
+    private fun checkBatteryOptimization() {
+        if (Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true)) {
+            val intent = Intent("android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS")
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        }
+    }
+    // MainActivity.kt
+    private fun requestAutoStartPermission() {
+        if (Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true)) {
+            try {
+                val intent = Intent().apply {
+                    component = ComponentName(
+                        "com.miui.securitycenter",
+                        "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                    )
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Please enable Auto-Start for this app in MIUI Settings", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onResume() {

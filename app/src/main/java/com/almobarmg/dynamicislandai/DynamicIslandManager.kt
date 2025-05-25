@@ -36,7 +36,7 @@ data class DynamicIslandConfig(
     // Expanded width will be calculated based on screen width
     val expandedHeightDp: Int = 100, // Increased height when expanded (dp)
     val horizontalMarginDp: Int = 16, // Margin from screen edges when expanded (dp)
-    val positionYDp: Int = 15, // Pixels from top (dp)
+    val positionYDp: Int = 25, // Pixels from top (dp)
     val animationDuration: Long = 250 // ms
 )
 
@@ -88,6 +88,7 @@ class DynamicIslandManager private constructor(private val context: Context) {
     private fun dpToPx(dp: Int): Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), displayMetrics).toInt()
     }
+
 
     fun createAndShowIsland() {
         mainScope.launch {

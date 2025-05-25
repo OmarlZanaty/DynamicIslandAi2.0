@@ -1,10 +1,16 @@
 package com.almobarmg.dynamicislandai
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
+import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.core.app.NotificationCompat
 
 class NotificationService : NotificationListenerService() {
 
@@ -15,6 +21,43 @@ class NotificationService : NotificationListenerService() {
         // No need to get manager instance here anymore
         Log.i(TAG, "✅ Notification listener connected.")
     }
+
+    override fun onCreate() {
+        super.onCreate()
+        createNotificationChannel()
+        val notification = NotificationCompat.Builder(this, "dynamic_island_channel")
+            .setContentTitle("Dynamic Island AI")
+            .setContentText("Running in background")
+            .setSmallIcon(R.drawable.ic_notification) // Ensure this is a valid drawable
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOngoing(true) // Prevent dismissal
+            .setSilent(true) // Avoid sound/vibration
+            .build()
+        try {
+            startForeground(1, notification)
+            Log.d("NotificationService", "Foreground service started successfully")
+        } catch (e: Exception) {
+            Log.e("NotificationService", "Failed to start foreground service", e)
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "dynamic_island_channel",
+                "Dynamic Island Service",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Channel for Dynamic Island foreground service"
+                setShowBadge(false)
+            }
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+            Log.d("NotificationService", "Notification channel created")
+        }
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -35,18 +78,6 @@ class NotificationService : NotificationListenerService() {
             return // Cannot proceed without the manager
         }
 
-        // --- Basic Notification Filtering (Temporarily Relaxed for Debugging) ---
-        /*
-        if (sbn.packageName == applicationContext.packageName) {
-            Log.d(TAG, "🔇 Ignoring notification from own package: ${sbn.packageName}")
-            return
-        }
-        // Temporarily allow ongoing notifications for debugging WhatsApp
-        if (sbn.isOngoing == true) {
-             Log.d(TAG, "🔇 DEBUG: Processing ongoing notification: ${sbn.key}")
-             // return // Keep commented out for now
-        }
-        */
 
         // --- Data Extraction ---
         val notification = sbn.notification
